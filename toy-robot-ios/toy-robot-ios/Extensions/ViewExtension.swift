@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension View {
-    func smallBlackButtonStyle() -> some View {
-        self.modifier(SmallBlackButton())
+    func smallBlackButtonStyle(enabled: Bool = true) -> some View {
+        self.modifier(SmallBlackButton(enabled: enabled))
     }
 }

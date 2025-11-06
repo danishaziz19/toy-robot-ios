@@ -6,30 +6,81 @@
 //
 
 import XCTest
+@testable import toy_robot_ios
 
 final class toy_robot_iosTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+    var viewModel: ToyRobotViewModel!
+    override func setUp() async throws {
+        try await super.setUp()
+        
+        viewModel = await MainActor.run {
+            ToyRobotViewModel()
         }
     }
 
+    override func tearDown() {
+        viewModel = nil
+        super.tearDown()
+    }
+
+    // MARK: - PLACE Command
+    @MainActor func testPlaceRobot() {
+        viewModel.addCommand(.place(position: Position(x: 0, y: 0), direction: .north))
+        viewModel.executeCommands()
+        XCTAssertEqual(viewModel.robot.position, Position(x: 0, y: 0))
+        XCTAssertEqual(viewModel.robot.direction, .north)
+    }
+
+    // MARK: - MOVE Command
+    @MainActor func testMoveRobotWithinBounds() {
+        viewModel.addCommand(.place(position: Position(x: 0, y: 0), direction: .north))
+        viewModel.addCommand(.move)
+        viewModel.executeCommands()
+        XCTAssertEqual(viewModel.robot.position, Position(x: 0, y: 1))
+    }
+
+    @MainActor func testMoveRobotAtEdgeDoesNotFall() {
+        viewModel.addCommand(.place(position: Position(x: 0, y: 4), direction: .north))
+        viewModel.addCommand(.move)
+        viewModel.executeCommands()
+        XCTAssertEqual(viewModel.robot.position, Position(x: 0, y: 4)) // cannot move off table
+    }
+
+    // MARK: - LEFT/RIGHT Commands
+    @MainActor func testRotateLeft() {
+        viewModel.addCommand(.place(position: Position(x: 1, y: 1), direction: .north))
+        viewModel.addCommand(.left)
+        viewModel.executeCommands()
+        XCTAssertEqual(viewModel.robot.direction, .west)
+    }
+
+    @MainActor func testRotateRight() {
+        viewModel.addCommand(.place(position: Position(x: 1, y: 1), direction: .north))
+        viewModel.addCommand(.right)
+        viewModel.executeCommands()
+        XCTAssertEqual(viewModel.robot.direction, .east)
+    }
+
+    // MARK: - Multiple Commands
+    @MainActor func testSequenceOfCommands() {
+        viewModel.addCommand(.place(position: Position(x: 1, y: 2), direction: .east))
+        viewModel.addCommand(.move)
+        viewModel.addCommand(.move)
+        viewModel.addCommand(.left)
+        viewModel.addCommand(.move)
+        viewModel.executeCommands()
+
+        XCTAssertEqual(viewModel.robot.position, Position(x: 3, y: 3))
+        XCTAssertEqual(viewModel.robot.direction, .north)
+    }
+
+    // MARK: - REPORT Command (optional check)
+    @MainActor func testReportCommand() {
+        viewModel.addCommand(.place(position: Position(x: 0, y: 0), direction: .north))
+        viewModel.addCommand(.report)
+        viewModel.executeCommands()
+        XCTAssertEqual(viewModel.robot.position, Position(x: 0, y: 0))
+        XCTAssertEqual(viewModel.robot.direction, .north)
+    }
 }

@@ -52,8 +52,10 @@ struct ControlsView: View {
                                                 direction: placeDirection))
                     viewModel.addCommand(.report)
                     viewModel.executeCommands()
+                    viewModel.isRobotPlaced = true
                 }
-                .smallBlackButtonStyle()
+                .smallBlackButtonStyle(enabled: !viewModel.isRobotPlaced)
+                .disabled(viewModel.isRobotPlaced)
             }
             .padding()
             .background(Color.gray.opacity(0.1))
@@ -62,16 +64,23 @@ struct ControlsView: View {
             VStack(spacing: 12) {
                 HStack(spacing: 12) {
                     Button("MOVE") { viewModel.addCommand(.move) }
-                        .smallBlackButtonStyle()
+                        .smallBlackButtonStyle(enabled: viewModel.isRobotPlaced)
+                        .disabled(!viewModel.isRobotPlaced)
+                    
                     Button("LEFT") { viewModel.addCommand(.left) }
-                        .smallBlackButtonStyle()
+                        .smallBlackButtonStyle(enabled: viewModel.isRobotPlaced)
+                        .disabled(!viewModel.isRobotPlaced)
+                    
                     Button("RIGHT") { viewModel.addCommand(.right) }
-                        .smallBlackButtonStyle()
+                        .smallBlackButtonStyle(enabled: viewModel.isRobotPlaced)
+                        .disabled(!viewModel.isRobotPlaced)
+                    
                     Button("REPORT") {
                         viewModel.addCommand(.report)
                         viewModel.executeCommands()
                     }
-                    .smallBlackButtonStyle()
+                    .smallBlackButtonStyle(enabled: viewModel.isRobotPlaced)
+                    .disabled(!viewModel.isRobotPlaced)
                 }
             }
             

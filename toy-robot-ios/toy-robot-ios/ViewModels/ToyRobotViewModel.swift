@@ -12,6 +12,7 @@ final class ToyRobotViewModel: ObservableObject {
     @Published var robot: Robot
     @Published var message: String = ""
     @Published var commandQueue: [Commands] = []
+    @Published var isRobotPlaced: Bool = false
     
     let table: Table
     private let robotEngine: RobotEngine
