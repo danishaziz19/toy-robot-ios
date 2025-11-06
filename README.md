@@ -51,6 +51,14 @@ REPORT output
 Run tests in Xcode via Product → Test (⌘U).
 
 
+# Screenshot
+
+![Screenshot](Screenshot.png)
+
+
+
+
+# PROBLEM
 
 # Toy Robot Simulator
 
