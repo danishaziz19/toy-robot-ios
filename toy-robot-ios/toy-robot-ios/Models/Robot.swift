@@ -5,9 +5,14 @@
 //  Created by Danish Aziz on 6/11/2025.
 //
 
-import Foundation
+import SwiftUI
 
-struct Robot {
-    let position: Position
-    let direction: Direction
+final class Robot: ObservableObject {
+    @Published var position: Position
+    @Published var direction: Direction
+
+    init(position: Position, direction: Direction) {
+        self.position = position
+        self.direction = direction
+    }
 }
