@@ -2,6 +2,56 @@
 
 ![Solution](solution.jpeg)
 
+
+# Toy Robot Simulator (iOS)
+
+A SwiftUI-based simulation of a toy robot moving on a 5x5 table.
+
+## Features
+
+Place the robot at a custom X,Y position and facing a direction (NORTH, SOUTH, EAST, WEST)
+Move, rotate (LEFT/RIGHT), and report robot position
+Command queue to execute multiple commands
+Simple, interactive UI with buttons and a visual table
+
+## Requirements
+
+Xcode 15 or later
+iOS 16 or later
+
+## How to Build & Run
+
+1. Clone the repository:
+git clone https://github.com/danishaziz19/toy-robot-ios.git
+
+
+2. Open the project in Xcode:
+cd toy-robot-ios
+open toy-robot-ios.xcodeproj
+
+
+3. Select a simulator or device and click Run (▶️).
+
+4. Use the on-screen controls:
+
+Set initial position and direction, then click PLACE
+Add commands with MOVE, LEFT, RIGHT
+Click REPORT to execute commands and see the robot’s position
+
+
+## Testing
+
+The project includes unit tests in the Tests/ folder for:
+
+Robot placement (PLACE command)
+Movement logic and table boundaries (MOVE)
+Rotation logic (LEFT/RIGHT)
+Command sequences
+REPORT output
+Run tests in Xcode via Product → Test (⌘U).
+
+
+
 # Toy Robot Simulator
 
 The following should be written in Swift
